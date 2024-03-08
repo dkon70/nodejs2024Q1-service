@@ -4,6 +4,7 @@ import { UpdateArtistDto } from './dto/update-artist.dto';
 import { validate as uuidValidate } from 'uuid';
 import { v4 as uuidv4 } from 'uuid';
 import { tracks } from 'src/track/track.service';
+import { albums } from 'src/album/album.service';
 
 const artists = [];
 
@@ -60,6 +61,11 @@ export class ArtistService {
           track.artistId = null;
         }
       });
+      albums.forEach((album) => {
+        if (album.artistId === id) {
+          album.artistId = null;
+        }
+      })
       return;
     }
   }
