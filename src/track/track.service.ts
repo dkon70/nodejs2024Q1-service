@@ -4,7 +4,7 @@ import { UpdateTrackDto } from './dto/update-track.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { validate as uuidValidate } from 'uuid';
 
-const tracks = [];
+export const tracks = [];
 
 @Injectable()
 export class TrackService {
@@ -24,7 +24,7 @@ export class TrackService {
     }
     const track = tracks.find(item => item.id === id);
     if (track) {
-      return true;
+      return track;
     } else {
       throw new NotFoundException('Track not found');
     }
