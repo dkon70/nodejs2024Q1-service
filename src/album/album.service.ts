@@ -3,9 +3,8 @@ import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { validate as uuidValidate } from 'uuid';
-import { tracks } from 'src/track/track.service';
-
-export const albums = [];
+import { tracks } from 'src/db/db';
+import { albums } from 'src/db/db';
 
 @Injectable()
 export class AlbumService {

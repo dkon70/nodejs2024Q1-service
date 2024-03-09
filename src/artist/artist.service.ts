@@ -3,10 +3,10 @@ import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { validate as uuidValidate } from 'uuid';
 import { v4 as uuidv4 } from 'uuid';
-import { tracks } from 'src/track/track.service';
-import { albums } from 'src/album/album.service';
+import { tracks } from 'src/db/db';
+import { albums } from 'src/db/db';
+import { artists } from 'src/db/db';
 
-const artists = [];
 
 @Injectable()
 export class ArtistService {
