@@ -1,17 +1,17 @@
-import { IsNumber, IsString, IsOptional } from "class-validator";
+import { IsNumber, IsString, IsOptional } from 'class-validator';
 
 export class CreateTrackDto {
   @IsString()
-  name: string
+  name: string;
 
   @IsNumber()
-  duration: number
+  duration: number;
 
   @IsOptional()
   @IsString()
-  artistId: string | null
+  artistId: string | null;
 
   @IsOptional()
   @IsString()
-  albumId: string | null
+  albumId: string | null;
 }

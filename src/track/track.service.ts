@@ -8,7 +8,13 @@ import { tracks } from 'src/db/db';
 @Injectable()
 export class TrackService {
   create(createTrackDto: CreateTrackDto) {
-    const track = { id: uuidv4(), name: createTrackDto.name, artistId: createTrackDto.artistId || null, albumId: createTrackDto.albumId || null, duration: createTrackDto.duration }
+    const track = {
+      id: uuidv4(),
+      name: createTrackDto.name,
+      artistId: createTrackDto.artistId || null,
+      albumId: createTrackDto.albumId || null,
+      duration: createTrackDto.duration,
+    };
     tracks.push(track);
     return track;
   }
@@ -21,7 +27,7 @@ export class TrackService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not correct uuid', 400);
     }
-    const track = tracks.find(item => item.id === id);
+    const track = tracks.find((item) => item.id === id);
     if (track) {
       return track;
     } else {
@@ -33,7 +39,7 @@ export class TrackService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not correct uuid', 400);
     }
-    const track = tracks.find(item => item.id === id);
+    const track = tracks.find((item) => item.id === id);
     if (!track) {
       throw new NotFoundException('Track not found');
     } else {
@@ -49,7 +55,7 @@ export class TrackService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not correct uuid', 400);
     }
-    const track = tracks.find(item => item.id === id);
+    const track = tracks.find((item) => item.id === id);
     if (!track) {
       throw new NotFoundException('Track not found');
     } else {

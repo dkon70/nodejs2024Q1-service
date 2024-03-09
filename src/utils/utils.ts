@@ -1,4 +1,4 @@
-import { tracks, albums, artists } from "src/db/db";
+import { tracks, albums, artists } from 'src/db/db';
 
 export const getAllTracksByIds = (id: string[]) => {
   if (id.length === 0) {
@@ -11,7 +11,7 @@ export const getAllTracksByIds = (id: string[]) => {
     }
   });
   return searchedTracks;
-}
+};
 
 export const getAllAlbumsByIds = (id: string[]) => {
   if (id.length === 0) {
@@ -24,7 +24,7 @@ export const getAllAlbumsByIds = (id: string[]) => {
     }
   });
   return searchedAlbums;
-}
+};
 
 export const getAllArtistsByIds = (id: string[]) => {
   if (id.length === 0) {
@@ -37,4 +37,4 @@ export const getAllArtistsByIds = (id: string[]) => {
     }
   });
   return searchedArtists;
-}
+};

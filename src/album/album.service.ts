@@ -9,7 +9,12 @@ import { albums } from 'src/db/db';
 @Injectable()
 export class AlbumService {
   create(createAlbumDto: CreateAlbumDto) {
-    const album = { id: uuidv4(), name: createAlbumDto.name, year: createAlbumDto.year, artistId: createAlbumDto.artistId || null };
+    const album = {
+      id: uuidv4(),
+      name: createAlbumDto.name,
+      year: createAlbumDto.year,
+      artistId: createAlbumDto.artistId || null,
+    };
     albums.push(album);
     return album;
   }
@@ -22,7 +27,7 @@ export class AlbumService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const album = albums.find(item => item.id === id);
+    const album = albums.find((item) => item.id === id);
     if (!album) {
       throw new NotFoundException('Album not found');
     } else {
@@ -34,7 +39,7 @@ export class AlbumService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const album = albums.find(item => item.id === id);
+    const album = albums.find((item) => item.id === id);
     if (!album) {
       throw new NotFoundException('Album not found');
     } else {
@@ -49,7 +54,7 @@ export class AlbumService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const album = albums.find(item => item.id === id);
+    const album = albums.find((item) => item.id === id);
     if (!album) {
       throw new NotFoundException('Album not found');
     } else {
@@ -59,7 +64,7 @@ export class AlbumService {
         if (track.albumId === id) {
           track.albumId = null;
         }
-      })
+      });
     }
   }
 }

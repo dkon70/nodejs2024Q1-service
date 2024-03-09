@@ -1,6 +1,10 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { favs, tracks, albums, artists } from 'src/db/db';
-import { getAllArtistsByIds, getAllAlbumsByIds, getAllTracksByIds } from 'src/utils/utils';
+import {
+  getAllArtistsByIds,
+  getAllAlbumsByIds,
+  getAllTracksByIds,
+} from 'src/utils/utils';
 import { validate as uuidValidate } from 'uuid';
 
 @Injectable()
@@ -9,7 +13,7 @@ export class FavsService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const track = tracks.find(track => track.id === id);
+    const track = tracks.find((track) => track.id === id);
     if (!track) {
       throw new HttpException("Track with such id doesn't exist", 422);
     } else {
@@ -22,7 +26,7 @@ export class FavsService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const track = favs.tracks.find(track => track === id);
+    const track = favs.tracks.find((track) => track === id);
     if (!track) {
       throw new NotFoundException('Track is not favorite');
     } else {
@@ -35,7 +39,7 @@ export class FavsService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const album = albums.find(album => album.id === id);
+    const album = albums.find((album) => album.id === id);
     if (!album) {
       throw new HttpException("Album with such id doesn't exist", 422);
     } else {
@@ -48,7 +52,7 @@ export class FavsService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const album = favs.albums.find(album => album === id);
+    const album = favs.albums.find((album) => album === id);
     if (!album) {
       throw new NotFoundException('Album is not favorite');
     } else {
@@ -61,7 +65,7 @@ export class FavsService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const artist = artists.find(artist => artist.id === id);
+    const artist = artists.find((artist) => artist.id === id);
     if (!artist) {
       throw new HttpException("Artist with such id doesn't exist", 422);
     } else {
@@ -74,7 +78,7 @@ export class FavsService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const artist = favs.artists.find(artist => artist === id);
+    const artist = favs.artists.find((artist) => artist === id);
     if (!artist) {
       throw new NotFoundException('Artist is not favorite');
     } else {
@@ -87,7 +91,7 @@ export class FavsService {
     return {
       artists: getAllArtistsByIds(favs.artists),
       albums: getAllAlbumsByIds(favs.albums),
-      tracks: getAllTracksByIds(favs.tracks)
+      tracks: getAllTracksByIds(favs.tracks),
     };
   }
 }

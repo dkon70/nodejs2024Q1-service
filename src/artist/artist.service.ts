@@ -7,11 +7,14 @@ import { tracks } from 'src/db/db';
 import { albums } from 'src/db/db';
 import { artists } from 'src/db/db';
 
-
 @Injectable()
 export class ArtistService {
   create(createArtistDto: CreateArtistDto) {
-    const artist = { id: uuidv4(), name: createArtistDto.name, grammy: createArtistDto.grammy };
+    const artist = {
+      id: uuidv4(),
+      name: createArtistDto.name,
+      grammy: createArtistDto.grammy,
+    };
     artists.push(artist);
     return artist;
   }
@@ -24,7 +27,7 @@ export class ArtistService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const artist = artists.find(item => item.id === id);
+    const artist = artists.find((item) => item.id === id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     } else {
@@ -36,7 +39,7 @@ export class ArtistService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const artist = artists.find(item => item.id === id);
+    const artist = artists.find((item) => item.id === id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     } else {
@@ -50,7 +53,7 @@ export class ArtistService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const artist = artists.find(item => item.id === id);
+    const artist = artists.find((item) => item.id === id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     } else {
@@ -65,7 +68,7 @@ export class ArtistService {
         if (album.artistId === id) {
           album.artistId = null;
         }
-      })
+      });
       return;
     }
   }
