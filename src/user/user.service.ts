@@ -37,7 +37,13 @@ export class UserService {
   findAll() {
     const usersWithoutPasswords = [];
     users.forEach((user) => {
-      usersWithoutPasswords.push({ id: user.id, login: user.login, version: user.version, createdAt: user.createdAt, updatedAt: user.updatedAt });
+      usersWithoutPasswords.push({
+        id: user.id,
+        login: user.login,
+        version: user.version,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      });
     });
     return usersWithoutPasswords;
   }
@@ -48,7 +54,13 @@ export class UserService {
     }
     const user = users.find((item) => item.id === id);
     if (user) {
-      return true;
+      return {
+        id: user.id,
+        login: user.login,
+        version: user.version,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      };
     } else {
       throw new NotFoundException('User not found');
     }
