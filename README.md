@@ -29,7 +29,7 @@ git checkout develop
 npm install
 ```
 
-# Create .env file
+## Create .env file
 
 ```
 echo PORT=4000 > .env
