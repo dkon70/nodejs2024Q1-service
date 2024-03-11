@@ -35,7 +35,11 @@ export class UserService {
   }
 
   findAll() {
-    return users;
+    const usersWithoutPasswords = [];
+    users.forEach((user) => {
+      usersWithoutPasswords.push({ id: user.id, login: user.login, version: user.version, createdAt: user.createdAt, updatedAt: user.updatedAt });
+    });
+    return usersWithoutPasswords;
   }
 
   findOne(id: string) {
