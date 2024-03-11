@@ -1,10 +1,10 @@
-import { IsNumber, IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsInt } from 'class-validator';
 
 export class CreateTrackDto {
   @IsString()
   name: string;
 
-  @IsNumber()
+  @IsInt()
   duration: number;
 
   @IsOptional()
