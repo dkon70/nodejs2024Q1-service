@@ -8,7 +8,19 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/dkon70/nodejs2024Q1-service.git
+```
+
+## Change current directory
+
+```
+cd nodejs2024Q1-service
+```
+
+## Change branch
+
+```
+git checkout develop
 ```
 
 ## Installing NPM modules
@@ -17,10 +29,22 @@ git clone {repository URL}
 npm install
 ```
 
-## Running application
+## Create .env file
 
 ```
-npm start
+echo PORT=4000 > .env
+```
+
+## Running application in production mode
+
+```
+npm run start
+```
+
+## Running application in dev mode
+
+```
+npm run start:dev
 ```
 
 After starting the app on port (4000 as default) you can open
