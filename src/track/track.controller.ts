@@ -36,7 +36,10 @@ export class TrackController {
 
   @Put(':id')
   @UsePipes(new ValidationPipe())
-  async update(@Param('id') id: string, @Body() updateTrackDto: UpdateTrackDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateTrackDto: UpdateTrackDto,
+  ) {
     return await this.trackService.update(id, updateTrackDto);
   }
 

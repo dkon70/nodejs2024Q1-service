@@ -51,8 +51,13 @@ export class TrackService {
       // track.artistId = updateTrackDto.artistId || track.artistId;
       // track.albumId = updateTrackDto.albumId || track.albumId;
       // return track;
-      await this.prisma.track.update({ where: { id: id }, data: updateTrackDto });
-      const updatedTrack = await this.prisma.track.findUnique({ where: { id: id } });
+      await this.prisma.track.update({
+        where: { id: id },
+        data: updateTrackDto,
+      });
+      const updatedTrack = await this.prisma.track.findUnique({
+        where: { id: id },
+      });
       return updatedTrack;
     }
   }
