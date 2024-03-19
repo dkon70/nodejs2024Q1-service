@@ -8,23 +8,28 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { v4 as uuidv4 } from 'uuid';
 import { validate as uuidValidate } from 'uuid';
-import { users } from 'src/db/db';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
+  constructor(private prisma: PrismaService) {}
+  async create(createUserDto: CreateUserDto) {
+    const users = await this.prisma.user.findMany();
     if (users.find((user) => user.login === createUserDto.login)) {
       throw new ConflictException('User already exists');
     }
+    const dateNow = Date.now();
     const user = {
       id: uuidv4(),
       login: createUserDto.login,
       password: createUserDto.password,
       version: 1,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      createdAt: dateNow,
+      updatedAt: dateNow,
     };
-    users.push(user);
+    await this.prisma.user.create({
+      data: { id: user.id, ...createUserDto, version: user.version },
+    });
     return {
       id: user.id,
       login: user.login,
@@ -34,72 +39,76 @@ export class UserService {
     };
   }
 
-  findAll() {
+  async findAll() {
+    const users = await this.prisma.user.findMany();
     const usersWithoutPasswords = [];
     users.forEach((user) => {
       usersWithoutPasswords.push({
         id: user.id,
         login: user.login,
         version: user.version,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        createdAt: user.createdAt.getTime(),
+        updatedAt: user.updatedAt.getTime(),
       });
     });
     return usersWithoutPasswords;
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const user = users.find((item) => item.id === id);
+    const user = await this.prisma.user.findUnique({ where: { id: id } });
     if (user) {
       return {
         id: user.id,
         login: user.login,
         version: user.version,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        createdAt: user.createdAt.getTime(),
+        updatedAt: user.updatedAt.getTime(),
       };
     } else {
       throw new NotFoundException('User not found');
     }
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
+  async update(id: string, updateUserDto: UpdateUserDto) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const user = users.find((item) => item.id === id);
+    const user = await this.prisma.user.findUnique({ where: { id: id } });
     if (!user) {
       throw new NotFoundException('User not found');
     }
+    const dateNow = Date.now();
     if (updateUserDto.oldPassword === user.password) {
-      user.password = updateUserDto.newPassword;
-      user.updatedAt = Date.now();
-      user.version++;
+      await this.prisma.user.update({
+        where: { id: id },
+        data: {
+          password: updateUserDto.newPassword,
+          version: user.version + 1,
+        },
+      });
       return {
         id: user.id,
         login: user.login,
-        version: user.version,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
+        version: user.version + 1,
+        createdAt: user.createdAt.getTime(),
+        updatedAt: dateNow,
       };
     } else {
       throw new HttpException('Old password is incorrect', 403);
     }
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const user = users.find((item) => item.id === id);
-    if (user) {
-      const index = users.indexOf(user);
-      users.splice(index, 1);
-    } else {
+    const user = await this.prisma.user.findUnique({ where: { id: id } });
+    if (!user) {
       throw new NotFoundException('User not found');
     }
+    await this.prisma.user.delete({ where: { id: id } });
   }
 }
