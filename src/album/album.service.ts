@@ -63,16 +63,16 @@ export class AlbumService {
     if (!album) {
       throw new NotFoundException('Album not found');
     } else {
-      await this.prisma.album.delete({ where: { id: id } });
-      const tracks = await this.prisma.track.findMany({
-        where: { albumId: id },
-      });
+      const tracks = await this.prisma.track.findMany();
       tracks.forEach(async (track) => {
-        await this.prisma.track.update({
-          where: { id: track.id },
-          data: { albumId: null },
-        });
+        if (track.albumId === id) {
+          await this.prisma.track.update({
+            where: { id: track.id },
+            data: { albumId: null },
+          });
+        }
       });
+      await this.prisma.album.delete({ where: { id: id } });
     }
   }
 }

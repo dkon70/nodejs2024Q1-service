@@ -71,6 +71,24 @@ export class ArtistService {
       //     album.artistId = null;
       //   }
       // });
+      const tracks = await this.prisma.track.findMany();
+      const albums = await this.prisma.album.findMany();
+      tracks.forEach(async (track) => {
+        if (track.artistId === id) {
+          await this.prisma.track.update({
+            where: { id: track.id },
+            data: { artistId: null },
+          });
+        }
+      });
+      albums.forEach(async (album) => {
+        if (album.artistId === id) {
+          await this.prisma.album.update({
+            where: { id: album.id },
+            data: { artistId: null },
+          });
+        }
+      });
       await this.prisma.artist.delete({ where: { id: id } });
       return;
     }
