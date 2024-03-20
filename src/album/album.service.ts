@@ -63,15 +63,6 @@ export class AlbumService {
     if (!album) {
       throw new NotFoundException('Album not found');
     } else {
-      const tracks = await this.prisma.track.findMany();
-      tracks.forEach(async (track) => {
-        if (track.albumId === id) {
-          await this.prisma.track.update({
-            where: { id: track.id },
-            data: { albumId: null },
-          });
-        }
-      });
       await this.prisma.album.delete({ where: { id: id } });
     }
   }

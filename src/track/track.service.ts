@@ -41,16 +41,10 @@ export class TrackService {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not correct uuid', 400);
     }
-    // const track = tracks.find((item) => item.id === id);
     const track = await this.prisma.track.findUnique({ where: { id: id } });
     if (!track) {
       throw new NotFoundException('Track not found');
     } else {
-      // track.name = updateTrackDto.name || track.name;
-      // track.duration = updateTrackDto.duration || track.duration;
-      // track.artistId = updateTrackDto.artistId || track.artistId;
-      // track.albumId = updateTrackDto.albumId || track.albumId;
-      // return track;
       await this.prisma.track.update({
         where: { id: id },
         data: updateTrackDto,

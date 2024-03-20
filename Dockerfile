@@ -8,4 +8,4 @@ RUN npm i
 
 EXPOSE ${PORT}
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:dev"]
