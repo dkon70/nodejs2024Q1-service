@@ -1,97 +1,91 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
-import { favs, tracks, albums, artists } from 'src/db/db';
-import {
-  getAllArtistsByIds,
-  getAllAlbumsByIds,
-  getAllTracksByIds,
-} from 'src/utils/utils';
 import { validate as uuidValidate } from 'uuid';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class FavsService {
-  createTrack(id: string) {
+  constructor(private prisma: PrismaService) {}
+  async createTrack(id: string) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const track = tracks.find((track) => track.id === id);
+    const track = await this.prisma.track.findUnique({ where: { id } });
     if (!track) {
       throw new HttpException("Track with such id doesn't exist", 422);
     } else {
-      favs.tracks.push(track.id);
+      await this.prisma.favorites.update({ where: { id: 1 }, data: { tracks: { connect: { id } } } });
       return 'Track added to favorites';
     }
   }
 
-  deleteTrack(id: string) {
+  async deleteTrack(id: string) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const track = favs.tracks.find((track) => track === id);
+    const track = await this.prisma.track.findUnique({ where: { id } });
     if (!track) {
       throw new NotFoundException('Track is not favorite');
     } else {
-      const index = favs.tracks.indexOf(track);
-      favs.tracks.splice(index, 1);
+      await this.prisma.favorites.update({ where: { id: 1 }, data: { tracks: { disconnect: { id } } } });
     }
   }
 
-  createAlbum(id: string) {
+  async createAlbum(id: string) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const album = albums.find((album) => album.id === id);
+    const album = await this.prisma.album.findUnique({ where: { id: id } });
     if (!album) {
       throw new HttpException("Album with such id doesn't exist", 422);
     } else {
-      favs.albums.push(album.id);
+      await this.prisma.favorites.update({ where: { id: 1 }, data: { albums: { connect: { id } } } });
       return 'Album added to favorites';
     }
   }
 
-  deleteAlbum(id: string) {
+  async deleteAlbum(id: string) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const album = favs.albums.find((album) => album === id);
+    const album = await this.prisma.album.findUnique({ where: { id: id } });
     if (!album) {
       throw new NotFoundException('Album is not favorite');
     } else {
-      const index = favs.albums.indexOf(album);
-      favs.albums.splice(index, 1);
+      await this.prisma.favorites.update({ where: { id: 1 }, data: { albums: { disconnect: { id } } } });
     }
   }
 
-  createArtist(id: string) {
+  async createArtist(id: string) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const artist = artists.find((artist) => artist.id === id);
+    const artist = await this.prisma.artist.findUnique({ where: { id: id } });
     if (!artist) {
       throw new HttpException("Artist with such id doesn't exist", 422);
     } else {
-      favs.artists.push(artist.id);
+      await this.prisma.favorites.update({ where: { id: 1 }, data: { artists: { connect: { id } } } }); 
       return 'Artist added to favorites';
     }
   }
 
-  deleteArtist(id: string) {
+  async deleteArtist(id: string) {
     if (!uuidValidate(id)) {
       throw new HttpException('id is not valid uuid', 400);
     }
-    const artist = favs.artists.find((artist) => artist === id);
+    const artist = await this.prisma.artist.findUnique({ where: { id: id } });
     if (!artist) {
       throw new NotFoundException('Artist is not favorite');
     } else {
-      const index = favs.artists.indexOf(artist);
-      favs.artists.splice(index, 1);
+      await this.prisma.favorites.update({ where: { id: 1 }, data: { artists: { disconnect: { id } } } });
     }
   }
 
-  findAll() {
-    return {
-      artists: getAllArtistsByIds(favs.artists),
-      albums: getAllAlbumsByIds(favs.albums),
-      tracks: getAllTracksByIds(favs.tracks),
-    };
+  async findAll() {
+    const favorites = await this.prisma.favorites.findFirst({ select: { artists: true, albums: true, tracks: true } });
+    if (!favorites) {
+      return { artists: [], albums: [], tracks: [] }
+    } else {
+      return favorites;
+    }
   }
 }

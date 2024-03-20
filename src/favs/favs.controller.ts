@@ -11,35 +11,35 @@ export class FavsController {
   }
 
   @Post('/track/:id')
-  createTrack(@Param('id') id: string) {
-    return this.favsService.createTrack(id);
+  async createTrack(@Param('id') id: string) {
+    return await this.favsService.createTrack(id);
   }
 
   @Delete('/track/:id')
   @HttpCode(204)
-  deleteTrack(@Param('id') id: string) {
-    return this.favsService.deleteTrack(id);
+  async deleteTrack(@Param('id') id: string) {
+    return await this.favsService.deleteTrack(id);
   }
 
   @Post('/album/:id')
-  createAlbum(@Param('id') id: string) {
-    return this.favsService.createAlbum(id);
+  async createAlbum(@Param('id') id: string) {
+    return await this.favsService.createAlbum(id);
   }
 
   @Delete('/album/:id')
   @HttpCode(204)
-  deleteAlbum(@Param('id') id: string) {
-    return this.favsService.deleteAlbum(id);
+  async deleteAlbum(@Param('id') id: string) {
+    return await this.favsService.deleteAlbum(id);
   }
 
   @Post('/artist/:id')
-  createArtist(@Param('id') id: string) {
-    return this.favsService.createArtist(id);
+  async createArtist(@Param('id') id: string) {
+    return await this.favsService.createArtist(id);
   }
 
   @Delete('/artist/:id')
   @HttpCode(204)
-  deleteArtist(@Param('id') id: string) {
-    return this.favsService.deleteArtist(id);
+  async deleteArtist(@Param('id') id: string) {
+    return await this.favsService.deleteArtist(id);
   }
 }
