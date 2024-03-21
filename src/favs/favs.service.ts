@@ -13,9 +13,13 @@ export class FavsService {
     if (!track) {
       throw new HttpException("Track with such id doesn't exist", 422);
     } else {
-      await this.prisma.favorites.update({
-        where: { id: 1 },
-        data: { tracks: { connect: { id } } },
+      await this.prisma.track.update({
+        where: { id },
+        data: {
+          Favorites: {
+            connectOrCreate: { where: { id: 1 }, create: { id: 1 } },
+          },
+        },
       });
       return 'Track added to favorites';
     }
@@ -29,9 +33,9 @@ export class FavsService {
     if (!track) {
       throw new NotFoundException('Track is not favorite');
     } else {
-      await this.prisma.favorites.update({
-        where: { id: 1 },
-        data: { tracks: { disconnect: { id } } },
+      await this.prisma.track.update({
+        where: { id },
+        data: { Favorites: { disconnect: { id: 1 } } },
       });
     }
   }
@@ -44,9 +48,13 @@ export class FavsService {
     if (!album) {
       throw new HttpException("Album with such id doesn't exist", 422);
     } else {
-      await this.prisma.favorites.update({
-        where: { id: 1 },
-        data: { albums: { connect: { id } } },
+      await this.prisma.album.update({
+        where: { id: id },
+        data: {
+          Favorites: {
+            connectOrCreate: { where: { id: 1 }, create: { id: 1 } },
+          },
+        },
       });
       return 'Album added to favorites';
     }
@@ -60,9 +68,9 @@ export class FavsService {
     if (!album) {
       throw new NotFoundException('Album is not favorite');
     } else {
-      await this.prisma.favorites.update({
-        where: { id: 1 },
-        data: { albums: { disconnect: { id } } },
+      await this.prisma.album.update({
+        where: { id: id },
+        data: { Favorites: { disconnect: { id: 1 } } },
       });
     }
   }
@@ -75,9 +83,13 @@ export class FavsService {
     if (!artist) {
       throw new HttpException("Artist with such id doesn't exist", 422);
     } else {
-      await this.prisma.favorites.update({
-        where: { id: 1 },
-        data: { artists: { connect: { id } } },
+      await this.prisma.artist.update({
+        where: { id: id },
+        data: {
+          Favorites: {
+            connectOrCreate: { where: { id: 1 }, create: { id: 1 } },
+          },
+        },
       });
       return 'Artist added to favorites';
     }
@@ -91,9 +103,9 @@ export class FavsService {
     if (!artist) {
       throw new NotFoundException('Artist is not favorite');
     } else {
-      await this.prisma.favorites.update({
-        where: { id: 1 },
-        data: { artists: { disconnect: { id } } },
+      await this.prisma.artist.update({
+        where: { id: id },
+        data: { Favorites: { disconnect: { id: 1 } } },
       });
     }
   }
