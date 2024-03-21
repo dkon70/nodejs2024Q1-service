@@ -1,8 +1,18 @@
-FROM node:20.11.1-alpine
+FROM node:20.11.1-alpine as build
 
 WORKDIR /app
 
-COPY . /app
+COPY . .
+
+RUN npm i
+
+FROM node:20.11.1-alpine as final
+
+WORKDIR /app
+
+COPY package*.json ./
+
+COPY --from=build /app /app
 
 RUN npm i
 

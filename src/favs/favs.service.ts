@@ -13,7 +13,10 @@ export class FavsService {
     if (!track) {
       throw new HttpException("Track with such id doesn't exist", 422);
     } else {
-      await this.prisma.favorites.update({ where: { id: 1 }, data: { tracks: { connect: { id } } } });
+      await this.prisma.favorites.update({
+        where: { id: 1 },
+        data: { tracks: { connect: { id } } },
+      });
       return 'Track added to favorites';
     }
   }
@@ -26,7 +29,10 @@ export class FavsService {
     if (!track) {
       throw new NotFoundException('Track is not favorite');
     } else {
-      await this.prisma.favorites.update({ where: { id: 1 }, data: { tracks: { disconnect: { id } } } });
+      await this.prisma.favorites.update({
+        where: { id: 1 },
+        data: { tracks: { disconnect: { id } } },
+      });
     }
   }
 
@@ -38,7 +44,10 @@ export class FavsService {
     if (!album) {
       throw new HttpException("Album with such id doesn't exist", 422);
     } else {
-      await this.prisma.favorites.update({ where: { id: 1 }, data: { albums: { connect: { id } } } });
+      await this.prisma.favorites.update({
+        where: { id: 1 },
+        data: { albums: { connect: { id } } },
+      });
       return 'Album added to favorites';
     }
   }
@@ -51,7 +60,10 @@ export class FavsService {
     if (!album) {
       throw new NotFoundException('Album is not favorite');
     } else {
-      await this.prisma.favorites.update({ where: { id: 1 }, data: { albums: { disconnect: { id } } } });
+      await this.prisma.favorites.update({
+        where: { id: 1 },
+        data: { albums: { disconnect: { id } } },
+      });
     }
   }
 
@@ -63,7 +75,10 @@ export class FavsService {
     if (!artist) {
       throw new HttpException("Artist with such id doesn't exist", 422);
     } else {
-      await this.prisma.favorites.update({ where: { id: 1 }, data: { artists: { connect: { id } } } }); 
+      await this.prisma.favorites.update({
+        where: { id: 1 },
+        data: { artists: { connect: { id } } },
+      });
       return 'Artist added to favorites';
     }
   }
@@ -76,14 +91,19 @@ export class FavsService {
     if (!artist) {
       throw new NotFoundException('Artist is not favorite');
     } else {
-      await this.prisma.favorites.update({ where: { id: 1 }, data: { artists: { disconnect: { id } } } });
+      await this.prisma.favorites.update({
+        where: { id: 1 },
+        data: { artists: { disconnect: { id } } },
+      });
     }
   }
 
   async findAll() {
-    const favorites = await this.prisma.favorites.findFirst({ select: { artists: true, albums: true, tracks: true } });
+    const favorites = await this.prisma.favorites.findFirst({
+      select: { artists: true, albums: true, tracks: true },
+    });
     if (!favorites) {
-      return { artists: [], albums: [], tracks: [] }
+      return { artists: [], albums: [], tracks: [] };
     } else {
       return favorites;
     }

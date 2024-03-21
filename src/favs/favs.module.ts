@@ -6,6 +6,6 @@ import { PrismaModule } from 'src/prisma/prisma.module';
 @Module({
   controllers: [FavsController],
   providers: [FavsService],
-  imports: [PrismaModule]
+  imports: [PrismaModule],
 })
 export class FavsModule {}
