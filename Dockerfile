@@ -18,4 +18,4 @@ RUN npm i
 
 EXPOSE ${PORT}
 
-CMD npx prisma migrate deploy && npm run start
+CMD npx prisma migrate deploy && npm run start:dev
