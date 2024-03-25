@@ -4,11 +4,12 @@
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- Docker - [Download & Install Docker](https://www.docker.com/products/docker-desktop/).
 
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/dkon70/nodejs2024Q1-service.git
 ```
 
 ## Installing NPM modules
@@ -17,11 +18,20 @@ git clone {repository URL}
 npm install
 ```
 
+## Create .env file
+You can create your own .env file or just copy from example.
+
+```bash
+cp .env.example .env
+```
+
 ## Running application
 
 ```
-npm start
+docker-compose up
 ```
+
+- Dockerhub repo: [link](https://hub.docker.com/r/dkon70/nodejs2024q1-service).
 
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.

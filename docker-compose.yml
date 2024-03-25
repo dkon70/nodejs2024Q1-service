@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    volumes:
+      - ./src:/app/src
+    restart: always
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - localhost
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    build: ./prisma/
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    networks:
+      - localhost
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres:
+
+networks:
+  localhost:
+    driver: bridge
+    name: localhost
